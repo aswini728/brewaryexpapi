@@ -1,0 +1,76 @@
+#%RAML 1.0
+title: brewary-e-api
+description: Experience layer to get all the method details.
+version: v1
+ 
+traits:
+  error: !include examples/errorcodes/errorResponseTrait.raml
+
+securitySchemes:
+  customsecurity: !include examples/securityScheme.raml
+
+securedBy:
+  - customsecurity
+
+/breweries:
+  get:
+    is: [error]
+    queryParameters:
+      states:
+        type: string
+        required: false
+      
+      cities:
+        type: string
+        required: false
+     
+      source:
+        type: string
+        required: false
+      
+      city:
+        type: string
+        required: false
+       
+      state:
+        type: string
+        required: false
+ 
+
+    responses:
+      200:
+        body:
+          application/json:
+            !include examples/errorResponses/200.json
+
+  post:
+    is: [error]
+    body:
+      application/json:
+        example:
+          !include examples/inputfile.json
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              !include examples/errorResponses/201.json
+  delete:
+      is: [error]
+      description: "delete by id"
+      queryParameters:
+        id:
+          type: integer
+          required: false
+      responses:
+        200:
+         body:
+          application/json:
+            example:
+              {
+                "status":"Deletion success"
+              }
+
+      
+    
+            

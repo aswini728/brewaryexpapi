@@ -1,0 +1,22 @@
+#%RAML 1.0 SecurityScheme
+type: x-Authorization
+description: Passing client id and client secret
+describedBy:
+  headers:
+    client_id:
+      type: integer
+      
+    client_secret:
+      type: integer
+     
+
+  responses:
+    401:
+      description: "401-UnAuthorized"
+      body:
+        application/json:
+          example:
+            {
+              "Error":"401",
+              "Error-Description":"UnAuthorized"
+            }

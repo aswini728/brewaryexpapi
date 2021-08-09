@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="d6ac913d-1b48-4be0-8038-78a13c1c8442" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<flow name="get-brewaryFlow" doc:id="7ec43df5-2931-40c8-b394-2313f3a197e0" >
+		<http:request method="GET" doc:name="Request" doc:id="11fef48d-ff6b-428f-8142-9a61060c9948" config-ref="HTTP_Request_configuration" path="/prc" responseTimeout="#[500000000]">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	"source" : attributes.queryParams.source,
+	"state" : attributes.queryParams.state,
+	"cities" : attributes.queryParams.cities,
+	"city" : attributes.queryParams.city,
+	"states" : attributes.queryParams.states
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+</mule>

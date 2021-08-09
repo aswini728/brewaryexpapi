@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_configuration1" doc:name="HTTP Request configuration" doc:id="9a48760b-eafd-40ed-bf07-590704580955" >
+		<http:request-connection host="localhost" port="8082" connectionIdleTimeout="300000000"/>
+	</http:request-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="e706351a-0df8-4dcb-b529-ece8964f9c62" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="Aswini08@" database="aswini" />
+	</db:config>
+	<flow name="delete-brewaryFlow" doc:id="ca6742f3-da51-46c5-ad77-50b304103175" >
+		<db:delete doc:name="Delete" doc:id="da87ab0c-508b-4c8e-9f4b-6ebb609af908" config-ref="Database_Config">
+			<db:sql ><![CDATA[delete from Brewaries where id=:id;]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	"id" : attributes.uriParams.id
+}]]]></db:input-parameters>
+		</db:delete>
+		<ee:transform doc:name="Copy_of_status sucess json" doc:id="e636e7ab-eebb-44d5-af64-bbf2659ecc15" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"status":"201 ok",
+"message":"success"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
